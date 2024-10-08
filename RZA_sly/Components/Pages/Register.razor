@@ -1,0 +1,68 @@
+﻿@page "/register"
+@using RZA_sly.Models
+@using RZA_sly.Utilities
+@inject RZA_sly.Services.CustomerService CustomerService
+@inject NavigationManager NavigationManager
+@inject UserSession UserSession
+
+
+@rendermode InteractiveServer
+
+<h3>Register New User</h3>
+
+<EditForm Model="newCustomer" OnValidSubmit="HandleValidSubmit" FormName="testForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Username:</label>
+        <InputText @bind-Value="newCustomer.Username" />
+    </div>
+
+    <div>
+        <label>Password:</label>
+        <InputText @bind-Value="password" type="password" />
+    </div>
+
+    <div>
+        <label>First Name:</label>
+        <InputText @bind-Value="newCustomer.FirstName" />
+    </div>
+
+    <div>
+        <label>Last Name:</label>
+        <InputText @bind-Value="newCustomer.LastName" />
+    </div>
+
+    <div>
+        <label>Email Address:</label>
+        <InputText @bind-Value="newCustomer.Email" />
+    </div>
+
+    <button type="submit">Register</button>
+</EditForm>
+
+@code {
+    private Customer newCustomer = new Customer();
+    private string password;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UserSession.UserId != 0)
+        {
+            NavigationManager.NavigateTo("/account");
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        // Hash the password using SHA256
+        newCustomer.Password = PasswordHasher.HashPassword(password);
+
+        // Insert the user into the database
+        await CustomerService.AddCustomerAsync(newCustomer);
+        newCustomer = new Customer();
+        password = "";
+        NavigationManager.NavigateTo("");
+    }
+}

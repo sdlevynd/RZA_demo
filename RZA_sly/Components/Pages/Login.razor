@@ -1,0 +1,61 @@
+﻿@page "/login"
+@using RZA_sly.Models
+@using RZA_sly.Utilities
+@inject RZA_sly.Services.CustomerService CustomerService
+@inject NavigationManager NavigationManager
+@inject UserSession UserSession
+
+
+
+@rendermode InteractiveServer
+
+<h3>Log In</h3>
+
+<EditForm Model="newCustomer" OnValidSubmit="HandleValidSubmit" FormName="testForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Username:</label>
+        <InputText @bind-Value="newCustomer.Username" />
+    </div>
+
+    <div>
+        <label>Password:</label>
+        <InputText @bind-Value="password" type="password" />
+    </div>
+
+    <button type="submit">Register</button>
+</EditForm>
+
+@code {
+    private Customer newCustomer = new Customer();
+    private string password;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UserSession.UserId != 0)
+        {
+            NavigationManager.NavigateTo("/account");
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        //var temp = UserService.searchUser("test");
+        // Hash the password using SHA256
+        newCustomer.Password = PasswordHasher.HashPassword(password);
+
+        // Insert the user into the database
+        newCustomer = await CustomerService.LogIn(newCustomer);
+        if (newCustomer == null)
+        {
+            Console.WriteLine("could not log in");
+        }
+        else
+        {
+            UserSession.UserId = newCustomer.CustomerId;
+            NavigationManager.NavigateTo("/");
+        }
+    }
+}

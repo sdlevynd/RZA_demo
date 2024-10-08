@@ -1,0 +1,97 @@
+﻿@using RZA_sly.Utilities
+@using RZA_sly.Services
+@using RZA_sly.Models
+@inject UserSession UserSession
+@inject RoomService RoomService
+@inject RoombookingService RoombookingService
+@inject CustomerService CustomerService
+@inject NavigationManager NavigationManager
+
+@rendermode InteractiveServer
+
+@page "/account"
+
+<h3>Account</h3>
+
+<button @onclick="ShowUserId">Show User ID</button>
+
+@if (customer != null)
+{
+    <li>@customer.FirstName @customer.LastName</li>
+}
+
+@if (rooms != null)
+{
+    <ul>
+        @foreach (var room in rooms)
+        {
+            <li>Room @room.RoomNumber: @room.RoomType for @room.Capacity people</li>
+        }
+    </ul>
+}
+
+<div>
+    @if (rooms != null)
+    {
+        <select @bind=Roomnumber>
+            @foreach (var room in rooms)
+            {
+                <option value=@room.RoomNumber>@room.RoomType</option>
+            
+            }
+        </select>
+    }
+    <select>
+        @for (int i = 1; i <= 7; i++)
+        {
+            <option value=@i>@i Days</option>
+        }
+    </select>
+    <button @onclick=OutputRoom>Book this room</button>
+</div>
+
+<button @onclick=Logout>Log Out</button>
+
+@code {
+    private Customer customer;
+    private List<Room> rooms;
+
+    private Room Room;
+    private int Roomnumber;
+
+    private bool loaded = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        rooms = await RoomService.GetRoomsAsync();
+        if (UserSession.UserId == 0)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            customer = await CustomerService.GetCustomerFromIdAsync(UserSession.UserId);
+        }
+    }
+
+    private async Task ShowUserId()
+    {
+        Console.WriteLine(UserSession.UserId); // Retrieve server-side user ID
+    }
+    private async Task Logout()
+    {
+        UserSession.UserId = 0;
+        NavigationManager.NavigateTo("/");
+    }
+    private async Task SetRoom()
+    {
+
+    }
+    private async Task OutputRoom()
+    {
+        Console.WriteLine(Roomnumber);
+        Room = await RoomService.GetRoomAsync(Roomnumber);
+        await RoombookingService.AddRoombookingAsync(customer, Room);
+
+    }
+}
