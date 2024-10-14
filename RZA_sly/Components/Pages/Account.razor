@@ -41,23 +41,29 @@
             }
         </select>
     }
-    <select>
+    <input type="date" min=@DateTime.Now.ToString("yyyy-MM-dd") @bind=startDate>
+    <select @bind=Days>
         @for (int i = 1; i <= 7; i++)
         {
             <option value=@i>@i Days</option>
         }
     </select>
-    <button @onclick=OutputRoom>Book this room</button>
+    <button @onclick=BookRoom>Book this room</button>
 </div>
 
 <button @onclick=Logout>Log Out</button>
+
+<a href="/bookings">My Bookings</a>
 
 @code {
     private Customer customer;
     private List<Room> rooms;
 
+    private DateOnly startDate;
+
     private Room Room;
     private int Roomnumber;
+    private int Days;
 
     private bool loaded = false;
 
@@ -87,11 +93,11 @@
     {
 
     }
-    private async Task OutputRoom()
+    private async Task BookRoom()
     {
         Console.WriteLine(Roomnumber);
         Room = await RoomService.GetRoomAsync(Roomnumber);
-        await RoombookingService.AddRoombookingAsync(customer, Room);
+        await RoombookingService.AddRoombookingAsync(customer, Room, startDate, Days);
 
     }
 }

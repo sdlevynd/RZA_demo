@@ -10,6 +10,7 @@ namespace RZA_sly.Services
         {
             _context = context;
         }
+        #region hidden
         public async Task AddCustomerAsync(Customer customer)
         {
             await _context.Customers.AddAsync(customer);
@@ -29,5 +30,6 @@ namespace RZA_sly.Services
                 c => c.Username == customer.Username &&
                 c.Password == customer.Password);
         }
+        #endregion
     }
 }

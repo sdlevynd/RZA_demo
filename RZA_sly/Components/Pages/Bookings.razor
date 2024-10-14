@@ -1,0 +1,38 @@
+﻿@page "/bookings"
+@using RZA_sly.Models
+@using RZA_sly.Utilities
+@using RZA_sly.Services
+@inject RoombookingService RoombookingService
+@inject UserSession UserSession
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<h3>My Bookings</h3>
+
+@if (myBookings != null)
+{
+    <ul>
+        @foreach (var booking in myBookings)
+        {
+            <li>Room @booking.RoomNumber: @booking.StartDate to @booking.EndDate</li>
+            <li>
+                <button>Delete this Booking</button>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    List<Roombooking> myBookings;
+    protected override async Task OnInitializedAsync()
+    {
+        if (UserSession.UserId == 0)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            myBookings = await RoombookingService.GetRoombookingsFromCustomer(UserSession.UserId);
+        }
+    }
+}

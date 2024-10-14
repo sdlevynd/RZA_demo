@@ -9,12 +9,13 @@ namespace RZA_sly.Services
         {
             _context = context;
         }
-        public async Task AddRoombookingAsync(Customer customer, Room room)
+        public async Task AddRoombookingAsync(Customer customer, Room room, DateOnly startDate, int duration)
         {
             Roombooking newRoombooking = new Roombooking();
             newRoombooking.Customer = customer;
             newRoombooking.RoomNumberNavigation = room;
-            newRoombooking.StartDate = DateOnly.FromDateTime(DateTime.Now);
+            newRoombooking.StartDate = startDate;
+            newRoombooking.EndDate = startDate.AddDays(duration);
             var temps = await _context.Roombookings.ToListAsync();
 
             var temp = await _context.Roombookings.Where(r => r.CustomerId == customer.CustomerId &&
@@ -34,6 +35,10 @@ namespace RZA_sly.Services
         public async Task<List<Roombooking>> GetRoombookingsFromCustomer(Customer customer)
         {
             return await _context.Roombookings.Where(rb => rb.CustomerId == customer.CustomerId).ToListAsync();
+        }
+        public async Task<List<Roombooking>> GetRoombookingsFromCustomer(int id)
+        {
+            return await _context.Roombookings.Where(rb => rb.CustomerId == id).ToListAsync();
         }
     }
 }
