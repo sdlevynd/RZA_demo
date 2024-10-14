@@ -40,5 +40,10 @@ namespace RZA_sly.Services
         {
             return await _context.Roombookings.Where(rb => rb.CustomerId == id).ToListAsync();
         }
+        public async Task DeleteBooking(Roombooking roombooking)
+        {
+            _context.Roombookings.Remove(roombooking);
+            await _context.SaveChangesAsync();
+        }
     }
 }

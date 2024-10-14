@@ -16,7 +16,7 @@
         {
             <li>Room @booking.RoomNumber: @booking.StartDate to @booking.EndDate</li>
             <li>
-                <button>Delete this Booking</button>
+                <button @onclick="@(e => deleteBooking(booking))">Delete this Booking</button>
             </li>
         }
     </ul>
@@ -28,11 +28,20 @@
     {
         if (UserSession.UserId == 0)
         {
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/login");
         }
         else
         {
-            myBookings = await RoombookingService.GetRoombookingsFromCustomer(UserSession.UserId);
+            await LoadBookings();
         }
+    }
+    private async Task LoadBookings()
+    {
+        myBookings = await RoombookingService.GetRoombookingsFromCustomer(UserSession.UserId);
+    }
+    private async Task deleteBooking(Roombooking bookingToDelete)
+    {
+        await RoombookingService.DeleteBooking(bookingToDelete);
+        await LoadBookings();
     }
 }
