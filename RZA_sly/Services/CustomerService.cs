@@ -13,7 +13,8 @@ namespace RZA_sly.Services
         #region hidden
         public async Task AddCustomerAsync(Customer customer)
         {
-            await _context.Customers.AddAsync(customer);
+            //await _context.Customers.AddAsync(customer);
+            await _context.Database.ExecuteSqlAsync($"INSERT INTO customers ()");
             await _context.SaveChangesAsync();
         }
         public async Task<List<Customer>> GetCustomersAsync()

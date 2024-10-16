@@ -30,7 +30,6 @@ namespace RZA_sly
             #endregion
 
             var app = builder.Build();
-
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
