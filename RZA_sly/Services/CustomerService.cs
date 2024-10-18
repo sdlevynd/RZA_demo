@@ -10,13 +10,17 @@ namespace RZA_sly.Services
         {
             _context = context;
         }
-        #region hidden
         public async Task AddCustomerAsync(Customer customer)
         {
-            //await _context.Customers.AddAsync(customer);
-            await _context.Database.ExecuteSqlAsync($"INSERT INTO customers ()");
+            await _context.Customers.AddAsync(customer);
             await _context.SaveChangesAsync();
         }
+        #region hidden
+        //public async Task AddCustomerAsync(Customer customer)
+        //{
+        //    await _context.Customers.AddAsync(customer);         
+        //    await _context.SaveChangesAsync();
+        //}
         public async Task<List<Customer>> GetCustomersAsync()
         {
             return await _context.Customers.ToListAsync();
@@ -30,6 +34,11 @@ namespace RZA_sly.Services
             return await _context.Customers.FirstAsync(
                 c => c.Username == customer.Username &&
                 c.Password == customer.Password);
+        }
+        public async Task<bool> CheckUsernameExistsAsync(string username)
+        {
+            var result = await _context.Customers.FirstOrDefaultAsync(c => c.Username == username);
+            return result != null;
         }
         #endregion
     }

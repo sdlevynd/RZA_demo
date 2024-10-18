@@ -1,6 +1,8 @@
 using RZA_sly.Components;
 using RZA_sly.Services;
+#region hidden
 using RZA_sly.Utilities;
+#endregion
 using RZA_sly.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,9 +21,9 @@ namespace RZA_sly
             builder.Services.AddDbContext<TlSlyRzaContext>(options =>
                 options.UseMySql(builder.Configuration.GetConnectionString("MySqlConnection"),
                 new MySqlServerVersion(new Version(8, 0, 29))));
-
-            #region hidden
+      
             builder.Services.AddScoped<CustomerService>();
+            #region hidden
             builder.Services.AddScoped<RoomService>();
             builder.Services.AddScoped<RoombookingService>();
 

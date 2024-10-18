@@ -1,14 +1,16 @@
 ﻿@page "/register"
 @using RZA_sly.Models
+@using RZA_sly.Services
+@inject CustomerService CustomerService
+@rendermode InteractiveServer
+
 @using RZA_sly.Utilities
-@inject RZA_sly.Services.CustomerService CustomerService
 @inject NavigationManager NavigationManager
 @inject UserSession UserSession
 
-
-@rendermode InteractiveServer
-
 <h3>Register New User</h3>
+
+<label>@message</label>
 
 <EditForm Model="newCustomer" OnValidSubmit="HandleValidSubmit" FormName="testForm">
     <DataAnnotationsValidator />
@@ -45,6 +47,7 @@
 @code {
     private Customer newCustomer = new Customer();
     private string password;
+    private string message;
 
     protected override async Task OnInitializedAsync()
     {
@@ -56,13 +59,22 @@
 
     private async Task HandleValidSubmit()
     {
-        // Hash the password using SHA256
-        newCustomer.Password = PasswordHasher.HashPassword(password);
+        bool usernameTaken = await CustomerService.CheckUsernameExistsAsync(newCustomer.Username);
+        if (!usernameTaken)
+        {
+            // Hash the password using SHA256
+            newCustomer.Password = PasswordHasher.HashPassword(password);
 
-        // Insert the user into the database
-        await CustomerService.AddCustomerAsync(newCustomer);
-        newCustomer = new Customer();
-        password = "";
-        NavigationManager.NavigateTo("");
+            // Insert the user into the database
+            await CustomerService.AddCustomerAsync(newCustomer);
+            newCustomer = new Customer();
+            password = "";
+            NavigationManager.NavigateTo("");
+        }
+        else
+        {
+            Console.WriteLine("username taken");
+            message = "username taken";
+        }
     }
 }
