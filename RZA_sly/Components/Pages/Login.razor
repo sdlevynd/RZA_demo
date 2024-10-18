@@ -42,7 +42,7 @@
     {
         //var temp = UserService.searchUser("test");
         // Hash the password using SHA256
-        newCustomer.Password = PasswordHasher.HashPassword(password);
+        newCustomer.Password = await PasswordUtils.HashPassword(password);
 
         // Insert the user into the database
         newCustomer = await CustomerService.LogIn(newCustomer);

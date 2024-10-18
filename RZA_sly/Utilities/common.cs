@@ -3,9 +3,18 @@ using System.Security.Cryptography;
 
 namespace RZA_sly.Utilities
 {
-    public static class PasswordHasher
+    public static class PasswordUtils
     {
-        public static string HashPassword(string password)
+        #region hidden
+        private static readonly char[] specialCharacters = new char[]
+        {
+            '!','£','$','%','^','&','*','(',')','-','=','_','+','[',']','{','}',';',':','@','#','~','<','>'
+        };
+        private static readonly char[] digits = new char[]
+        {
+            '1','2','3','4','5','6','7','8','9','0'
+        };
+        public static async Task<string> HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())
             {
@@ -25,28 +34,31 @@ namespace RZA_sly.Utilities
                 return sb.ToString();  // Return the hashed password as a string
             }
         }
+        public static async Task<bool> ValidPassword(string password)
+        {
+            bool valid = true;
+            if (password.Length < 8)
+            {
+                return false;
+            }
+            else if (!digits.Any(d => password.Contains(d)))
+            {
+                return false;
+            }
+            else if (!specialCharacters.Any(sc => password.Contains(sc)))
+            {
+                return false;
+            }
+            else if (password.ToUpper() == password)
+            {
+                return false;
+            }
+            return valid;
+        }
+        #endregion
     }
     public class UserSession
     {
         public int UserId { get; set; }
-    }
-
-    public class SessionStorage
-    {
-        private string? savedString;
-
-        public string UserId
-        {
-            get => savedString ?? string.Empty;
-            set
-            {
-                savedString = value;
-                NotifyStateChanged();
-            }
-        }
-
-        public event Action? OnChange;
-
-        private void NotifyStateChanged() => OnChange?.Invoke();
     }
 }
