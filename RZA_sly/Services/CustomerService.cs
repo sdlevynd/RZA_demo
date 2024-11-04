@@ -15,12 +15,13 @@ namespace RZA_sly.Services
             await _context.Customers.AddAsync(customer);
             await _context.SaveChangesAsync();
         }
+        public async Task<Customer?> LogIn(Customer customer)
+        {
+            return await _context.Customers.FirstOrDefaultAsync(
+                c => c.Username == customer.Username &&
+                c.Password == customer.Password);
+        }
         #region hidden
-        //public async Task AddCustomerAsync(Customer customer)
-        //{
-        //    await _context.Customers.AddAsync(customer);         
-        //    await _context.SaveChangesAsync();
-        //}
         public async Task<List<Customer>> GetCustomersAsync()
         {
             return await _context.Customers.ToListAsync();
@@ -28,12 +29,6 @@ namespace RZA_sly.Services
         public async Task<Customer> GetCustomerFromIdAsync(int id)
         {
             return await _context.Customers.FirstAsync(c => c.CustomerId == id);
-        }
-        public async Task<Customer> LogIn(Customer customer)
-        {
-            return await _context.Customers.FirstAsync(
-                c => c.Username == customer.Username &&
-                c.Password == customer.Password);
         }
         public async Task<bool> CheckUsernameExistsAsync(string username)
         {

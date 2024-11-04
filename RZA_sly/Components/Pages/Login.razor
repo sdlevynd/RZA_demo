@@ -9,7 +9,7 @@
 
 <h3>Log In</h3>
 
-<EditForm Model="newCustomer" OnValidSubmit="HandleValidSubmit" FormName="testForm">
+<EditForm Model="newCustomer" OnValidSubmit="HandleValidSubmit" FormName="LoginForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -30,6 +30,7 @@
     private Customer newCustomer = new Customer();
     private string password;
 
+    #region Hidden
     protected override async Task OnInitializedAsync()
     {
         if (UserSession.UserId != 0)
@@ -37,14 +38,12 @@
             NavigationManager.NavigateTo("/account");
         }
     }
+    #endregion
 
     private async Task HandleValidSubmit()
     {
-        //var temp = UserService.searchUser("test");
-        // Hash the password using SHA256
         newCustomer.Password = await PasswordUtils.HashPassword(password);
-
-        // Insert the user into the database
+        newCustomer.Password = password;
         newCustomer = await CustomerService.LogIn(newCustomer);
         if (newCustomer == null)
         {
@@ -52,7 +51,9 @@
         }
         else
         {
+            #region Hidden
             UserSession.UserId = newCustomer.CustomerId;
+            #endregion
             NavigationManager.NavigateTo("/account");
         }
     }

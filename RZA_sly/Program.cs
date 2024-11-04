@@ -1,8 +1,6 @@
 using RZA_sly.Components;
 using RZA_sly.Services;
-#region hidden
 using RZA_sly.Utilities;
-#endregion
 using RZA_sly.Models;
 using Microsoft.EntityFrameworkCore;
 
