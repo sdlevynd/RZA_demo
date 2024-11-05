@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gui_testing", "gui_testing\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{136ACB91-B909-45B8-A229-44B76F2C8DD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest_Demo", "UnitTest_Demo\UnitTest_Demo.csproj", "{527A9E5E-BC85-4D7B-A861-DA0B2E228E50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest_Demo", "UnitTest_Demo\UnitTest_Demo.csproj", "{527A9E5E-BC85-4D7B-A861-DA0B2E228E50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

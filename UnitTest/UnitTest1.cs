@@ -26,12 +26,14 @@ namespace UnitTest
             Customer tempCustomer = new Customer()
             {
                 Username = "admin",
-                Password = PasswordUtils.HashPassword("admin")
+                Password = "admin"
             };
             await _customerService.AddCustomerAsync(tempCustomer);
-            var result = await _context.Customers.FirstOrDefaultAsync(c => c.Username == tempCustomer.Username);
+            var result = await _context.Customers.FirstOrDefaultAsync(
+                c => c.Username == "admin");
             Assert.NotNull(result);
         }
+        #region hidden
         [Test]
         public async Task Test2()
         {
@@ -63,6 +65,7 @@ namespace UnitTest
             var result = await _customerService.LogIn(tempCustomer);
             Assert.Null(result);
         }
+        #endregion
         [TearDown]
         public void TearDown()
         {

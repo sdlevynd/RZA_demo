@@ -1,8 +1,10 @@
 ﻿@page "/"
 @using RZA_sly.Components
 @using RZA_sly.Utilities
-@rendermode InteractiveServer
 @inject UserSession UserSession
+@inject NavigationManager NavigationManager
+
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
@@ -24,7 +26,8 @@
 }
 else
 {
-    <h1>you have logged in</h1>
+    <h1>your userid is @UserSession.UserId</h1>
+    <button onclick=@Modify>Modify your account</button>
 }
 
 @code {
@@ -33,5 +36,9 @@ else
     private void ShowDialog()
     {
         dialogShown = true;
+    }
+    private void Modify()
+    {
+        NavigationManager.NavigateTo("/modify");
     }
 }

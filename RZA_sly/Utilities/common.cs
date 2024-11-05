@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 
 namespace RZA_sly.Utilities
 {
+    #region hidden
     public static class PasswordUtils
     {
         #region hidden
@@ -57,6 +58,7 @@ namespace RZA_sly.Utilities
         }
         #endregion
     }
+    #endregion
     public class UserSession
     {
         public int UserId { get; set; }

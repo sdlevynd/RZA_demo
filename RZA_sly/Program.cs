@@ -25,7 +25,7 @@ namespace RZA_sly
             builder.Services.AddScoped<RoomService>();
             builder.Services.AddScoped<RoombookingService>();
             #endregion
-            builder.Services.AddScoped<UserSession>();
+            //builder.Services.AddScoped<UserSession>();
             builder.Services.AddSingleton<UserSession>();
 
 
