@@ -3,6 +3,8 @@
 @inject UserSession UserSession
 @inject CustomerService CustomerService
 
+@rendermode InteractiveServer
+
 @page "/modify"
 
 <h3>ModifyAccount</h3>
@@ -25,7 +27,7 @@
         {
             string hashedNewPassword = PasswordUtils.HashPassword(newPassword);
             string hashedOldPassword = PasswordUtils.HashPassword(oldPassword);
-
+            await CustomerService.ChangePassword(UserSession.UserId, hashedOldPassword, hashedNewPassword);
         }
     }
 }
