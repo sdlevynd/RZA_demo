@@ -24,10 +24,10 @@ namespace RZA_sly
             #region hidden
             builder.Services.AddScoped<RoomService>();
             builder.Services.AddScoped<RoombookingService>();
-
+            #endregion
             builder.Services.AddScoped<UserSession>();
             builder.Services.AddSingleton<UserSession>();
-            #endregion
+
 
             var app = builder.Build();
             // Configure the HTTP request pipeline.

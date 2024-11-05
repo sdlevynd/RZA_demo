@@ -74,7 +74,7 @@
         else
         {
             // Hash the password using SHA256
-            newCustomer.Password = await PasswordUtils.HashPassword(password);
+            newCustomer.Password = PasswordUtils.HashPassword(password);
 
             // Insert the user into the database
             await CustomerService.AddCustomerAsync(newCustomer);

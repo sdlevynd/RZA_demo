@@ -3,15 +3,6 @@ using RZA_sly.Services;
 using RZA_sly.Utilities;
 using RZA_sly.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Moq;
-using NUnit.Framework;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace UnitTest
 {
@@ -23,23 +14,59 @@ namespace UnitTest
         [SetUp]
         public void SetUp()
         {
-            //// Configure the in-memory database
-            //var options = new DbContextOptionsBuilder<TlSlyRzaContext>()
-            //    .UseInMemoryDatabase(databaseName: "TestDatabase")
-            //    .Options;
-
-            //_context = new TlSlyRzaContext(options);
-            //_customerService = new CustomerService(_context);
-
-            //// Seed some initial data if needed
-            //_context.MyDataTable.Add(new MyDataModel { Id = 1, Name = "Initial Data" });
-            //_dbContext.SaveChanges();
+            var options = new DbContextOptionsBuilder<TlSlyRzaContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
+            _context = new TlSlyRzaContext(options);
+            _customerService = new CustomerService(_context);
         }
-
-        //[TearDown]
-        //public void TearDown()
-        //{
-        //    _dbContext.Dispose();
-        //}
+        [Test]
+        public async Task Test1()
+        {
+            Customer tempCustomer = new Customer()
+            {
+                Username = "admin",
+                Password = PasswordUtils.HashPassword("admin")
+            };
+            await _customerService.AddCustomerAsync(tempCustomer);
+            var result = await _context.Customers.FirstOrDefaultAsync(c => c.Username == tempCustomer.Username);
+            Assert.NotNull(result);
+        }
+        [Test]
+        public async Task Test2()
+        {
+            Customer tempCustomer = new Customer();
+            tempCustomer.Username = "admin";
+            tempCustomer.Password = PasswordUtils.HashPassword("admin");
+            await _customerService.AddCustomerAsync(tempCustomer);
+            var result = await _context.Customers.FirstOrDefaultAsync(c => c.Username == "not admin");
+            Assert.Null(result);
+        }
+        [Test]
+        public async Task Test3()
+        {
+            Customer tempCustomer = new Customer();
+            tempCustomer.Username = "admin";
+            tempCustomer.Password = PasswordUtils.HashPassword("admin");
+            await _customerService.AddCustomerAsync(tempCustomer);
+            var result = await _customerService.LogIn(tempCustomer);
+            Assert.NotNull(result);
+        }
+        [Test]
+        public async Task Test4()
+        {
+            Customer tempCustomer = new Customer();
+            tempCustomer.Username = "admin";
+            tempCustomer.Password = PasswordUtils.HashPassword("admin");
+            await _customerService.AddCustomerAsync(tempCustomer);
+            tempCustomer.Username = "not admin";
+            var result = await _customerService.LogIn(tempCustomer);
+            Assert.Null(result);
+        }
+        [TearDown]
+        public void TearDown()
+        {
+            _context.Dispose();
+        }
     }
 }

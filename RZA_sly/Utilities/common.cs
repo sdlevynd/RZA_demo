@@ -14,7 +14,7 @@ namespace RZA_sly.Utilities
         {
             '1','2','3','4','5','6','7','8','9','0'
         };
-        public static async Task<string> HashPassword(string password)
+        public static string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())
             {

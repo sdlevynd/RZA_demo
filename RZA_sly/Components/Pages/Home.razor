@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using RZA_sly.Components
+@using RZA_sly.Utilities
 @rendermode InteractiveServer
+@inject UserSession UserSession
 
 <PageTitle>Home</PageTitle>
 
@@ -15,6 +17,15 @@
         </p>
     </BodyContent>
 </Dialog>
+
+@if (UserSession.UserId == 0)
+{
+    <h1>you need to log in</h1>
+}
+else
+{
+    <h1>you have logged in</h1>
+}
 
 @code {
     private bool dialogShown = false;

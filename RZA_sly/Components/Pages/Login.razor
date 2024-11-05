@@ -42,7 +42,7 @@
 
     private async Task HandleValidSubmit()
     {
-        newCustomer.Password = await PasswordUtils.HashPassword(password);
+        newCustomer.Password = PasswordUtils.HashPassword(password);
         newCustomer = await CustomerService.LogIn(newCustomer);
         if (newCustomer == null)
         {
@@ -50,9 +50,7 @@
         }
         else
         {
-            #region Hidden
             UserSession.UserId = newCustomer.CustomerId;
-            #endregion
             NavigationManager.NavigateTo("/account");
         }
     }
