@@ -21,6 +21,13 @@ namespace RZA_sly.Services
                 c => c.Username == customer.Username &&
                 c.Password == customer.Password);
         }
+        public async Task ChangePassword(int customerId, string hashedOldPassword, string hashedNewPassword)
+        {
+            Customer? customer = await _context.Customers.SingleOrDefaultAsync(
+                c => c.CustomerId == customerId && c.Password == hashedOldPassword);
+            customer.Password = hashedNewPassword;
+            await _context.SaveChangesAsync();
+        }
         #region hidden
         public async Task<List<Customer>> GetCustomersAsync()
         {

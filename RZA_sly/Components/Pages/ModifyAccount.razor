@@ -1,7 +1,31 @@
-﻿@page "/modify"
+﻿@using RZA_sly.Utilities
+@using RZA_sly.Services
+@inject UserSession UserSession
+@inject CustomerService CustomerService
+
+@page "/modify"
 
 <h3>ModifyAccount</h3>
 
-@code {
+<p>new password</p>
+<input @bind-value=@newPassword/>
+<p>old password</p>
+<input @bind-value=@oldPassword/>
+<p>confirm old password</p>
+<input @bind-value=@oldPasswordConfirm />
+<button onclick=@ChangePassword>Change Password</button>
 
+@code {
+    private string newPassword;
+    private string oldPassword;
+    private string oldPasswordConfirm;
+    private async Task ChangePassword()
+    {
+        if (oldPassword == oldPasswordConfirm)
+        {
+            string hashedNewPassword = PasswordUtils.HashPassword(newPassword);
+            string hashedOldPassword = PasswordUtils.HashPassword(oldPassword);
+
+        }
+    }
 }
