@@ -46,6 +46,25 @@ namespace RZA_sly.Services
             var result = await _context.Customers.FirstOrDefaultAsync(c => c.Username == username);
             return result != null;
         }
+        public async Task<string> GetCustomerNameAsync(int userid)
+        {
+            if (userid == 0)
+            {
+                return "";
+            }
+            else
+            {
+                Customer customer = _context.Customers.SingleOrDefault(c => c.CustomerId == userid);
+                if (customer != null)
+                {
+                    return $"{customer.FirstName} {customer.LastName}";
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
         #endregion
     }
 }
