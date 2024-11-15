@@ -13,7 +13,7 @@ namespace RZA_sly.Services
         {
             Roombooking newRoombooking = new Roombooking();
             newRoombooking.Customer = customer;
-            newRoombooking.Room = room;
+            newRoombooking.RoomNumberNavigation = room;
             newRoombooking.StartDate = startDate;
             newRoombooking.EndDate = startDate.AddDays(duration);
             var temps = await _context.Roombookings.ToListAsync();
