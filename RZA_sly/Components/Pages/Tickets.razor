@@ -1,0 +1,39 @@
+﻿@using RZA_sly.Models
+@using RZA_sly.Services
+@inject AttractionService AttractionService
+
+@page "/tickets"
+
+<h3>Tickets</h3>
+
+@if (attractions != null)
+{
+    @foreach (Attraction attraction in attractions)
+    {
+        <div>
+            @attraction.Name: £@attraction.Price
+            <button>add to basket</button>
+        </div>
+    }
+}
+else
+{
+    <div>no attractions</div>    
+}
+
+@code {
+    List<Attraction> attractions;
+    List<Ticket> tickets;
+
+    protected override async Task OnInitializedAsync()
+    {
+        attractions = await AttractionService.GetAttractionsAsync();
+        tickets = new List<Ticket>();
+    }
+    private void AddTicket(int attractionId)
+    {
+        Ticket newTicket = new Ticket();
+        newTicket.AttractionId = attractionId;
+        newTicket.Date = DateOnly.FromDateTime(DateTime.Now);
+    }
+}

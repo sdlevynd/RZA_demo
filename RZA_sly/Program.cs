@@ -21,11 +21,9 @@ namespace RZA_sly
                 new MySqlServerVersion(new Version(8, 0, 29))));
       
             builder.Services.AddScoped<CustomerService>();
-            #region hidden
             builder.Services.AddScoped<RoomService>();
             builder.Services.AddScoped<RoombookingService>();
-            #endregion
-            //builder.Services.AddScoped<UserSession>();
+            builder.Services.AddScoped<AttractionService>();
             builder.Services.AddSingleton<UserSession>();
 
 
