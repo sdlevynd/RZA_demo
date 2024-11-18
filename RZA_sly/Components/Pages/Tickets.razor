@@ -12,9 +12,10 @@
     {
         <div>
             @attraction.Name: £@attraction.Price
-            <button>add to basket</button>
+            <button @onclick="@(e => AddTicket(attraction.AttractionId))">Add to Basket</button>
         </div>
     }
+    <button>Book Tickets</button>
 }
 else
 {
@@ -35,5 +36,9 @@ else
         Ticket newTicket = new Ticket();
         newTicket.AttractionId = attractionId;
         newTicket.Date = DateOnly.FromDateTime(DateTime.Now);
+    }
+    private void BookTicekts()
+    {
+        
     }
 }
