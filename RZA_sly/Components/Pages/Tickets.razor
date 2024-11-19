@@ -1,6 +1,11 @@
 ﻿@using RZA_sly.Models
 @using RZA_sly.Services
+@using RZA_sly.Utilities
 @inject AttractionService AttractionService
+@inject UserSession UserSession
+@inject NavigationManager NavigationManager
+
+@rendermode InteractiveServer
 
 @page "/tickets"
 
@@ -15,29 +20,51 @@
             <button @onclick="@(e => AddTicket(attraction.AttractionId))">Add to Basket</button>
         </div>
     }
-    <button>Book Tickets</button>
+    <input type="date" min=@DateTime.Now.ToString("yyyy-MM-dd") @bind=@ticketDate>
+    <button @onclick=@BookTickets>Book Tickets</button>
 }
 else
 {
     <div>no attractions</div>    
 }
 
+@if (tickets != null && tickets.Count != 0)
+{
+    @foreach (Ticket ticket in tickets)
+    {
+        <div>@ticket.TicketId, @ticket.AttractionId</div>
+    }
+}
+else
+{
+    <div>Your tickets will show here...</div>
+}
+
 @code {
     List<Attraction> attractions;
     List<Ticket> tickets;
+    DateOnly ticketDate;
+    Ticketbooking newTicketbooking;
     protected override async Task OnInitializedAsync()
     {
-        attractions = await AttractionService.GetAttractionsAsync();
-        tickets = new List<Ticket>();
+        if (UserSession.UserId == null || UserSession.UserId == 0)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            attractions = await AttractionService.GetAttractionsAsync();
+            tickets = new List<Ticket>();
+            newTicketbooking = new Ticketbooking();
+        }
     }
     private void AddTicket(int attractionId)
     {
-        Ticket newTicket = new Ticket();
-        newTicket.AttractionId = attractionId;
-        newTicket.Date = DateOnly.FromDateTime(DateTime.Now);
+        
     }
-    private void BookTicekts()
+    private async Task BookTickets()
     {
+        
         
     }
 }

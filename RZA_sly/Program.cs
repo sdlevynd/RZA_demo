@@ -1,4 +1,4 @@
-using RZA_sly.Components;
+﻿using RZA_sly.Components;
 using RZA_sly.Services;
 using RZA_sly.Utilities;
 using RZA_sly.Models;
@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RZA_sly
 {
+    //scaffold code:
+    //scaffold-dbcontext name="MySqlConnection" pomelo.entityframeworkcore.mysql -outputdir Models -force​
     public class Program
     {
         public static void Main(string[] args)
@@ -24,6 +26,7 @@ namespace RZA_sly
             builder.Services.AddScoped<RoomService>();
             builder.Services.AddScoped<RoombookingService>();
             builder.Services.AddScoped<AttractionService>();
+            
             builder.Services.AddSingleton<UserSession>();
 
 
