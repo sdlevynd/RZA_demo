@@ -26,6 +26,8 @@ namespace RZA_sly
             builder.Services.AddScoped<RoomService>();
             builder.Services.AddScoped<RoombookingService>();
             builder.Services.AddScoped<AttractionService>();
+            builder.Services.AddScoped<TicketService>();
+            builder.Services.AddScoped<TicketbookingService>();
             
             builder.Services.AddSingleton<UserSession>();
 
