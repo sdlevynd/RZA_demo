@@ -13,10 +13,10 @@ namespace RZA_sly.Services
         {
             Roombooking newRoombooking = new Roombooking();
             newRoombooking.Customer = customer;
-            newRoombooking.RoomNumberNavigation = room;
+            newRoombooking.Room = room;
             newRoombooking.StartDate = startDate;
             newRoombooking.EndDate = startDate.AddDays(duration);
-            var temps = await _context.Roombookings.ToListAsync();
+            //var temps = await _context.Roombookings.ToListAsync();
 
             var temp = await _context.Roombookings.Where(r => r.CustomerId == customer.CustomerId &&
                                                          r.RoomNumber == room.RoomNumber &&
